@@ -1,6 +1,6 @@
 ;=============================
-;PC-8001 "INVADER"—p
-;ƒTƒEƒ“ƒhƒpƒbƒ`
+;PC-8001 "INVADER"ç”¨
+;ã‚µã‚¦ãƒ³ãƒ‰ãƒ‘ãƒƒãƒ
 ;2020/02/07
 ;
 ;USAGE: MON+GCF00
@@ -8,15 +8,15 @@
 
 FALSE	EQU	0
 
-BOMBB	EQU	00000001B	;”š”­‰¹
-BEAMB	EQU	00000010B	;ƒr[ƒ€”­ŽË‰¹
-UFOHITB	EQU	00000100B	;UFOƒqƒbƒg‰¹
-THITB	EQU	00001000B	;ƒ^[ƒQƒbƒgƒqƒbƒg‰¹
-STEPB	EQU	00010000B	;si‰¹
-UFOB	EQU	00100000B	;UFO”òs‰¹
-PORT	EQU	10H		;ƒTƒEƒ“ƒhƒ{[ƒh‚Ìƒ|[ƒg”Ô†
+BOMBB	EQU	00000001B	;çˆ†ç™ºéŸ³
+BEAMB	EQU	00000010B	;ãƒ“ãƒ¼ãƒ ç™ºå°„éŸ³
+UFOHITB	EQU	00000100B	;UFOãƒ’ãƒƒãƒˆéŸ³
+THITB	EQU	00001000B	;ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ’ãƒƒãƒˆéŸ³
+STEPB	EQU	00010000B	;è¡Œé€²éŸ³
+UFOB	EQU	00100000B	;UFOé£›è¡ŒéŸ³
+PORT	EQU	10H		;ã‚µã‚¦ãƒ³ãƒ‰ãƒœãƒ¼ãƒ‰ã®ãƒãƒ¼ãƒˆç•ªå·
 
-EOD	EQU	0FFH		;ƒf[ƒ^ƒGƒ“ƒhƒ}[ƒJ[
+EOD	EQU	0FFH		;ãƒ‡ãƒ¼ã‚¿ã‚¨ãƒ³ãƒ‰ãƒžãƒ¼ã‚«ãƒ¼
 
 Z0060	EQU	0D304H
 UFOPCLR	EQU	0D5F4H
@@ -35,7 +35,7 @@ INVFORM	EQU	0E450H
 	ORG	0CF00H
 
 ;-----------------------------
-;ƒpƒbƒ`‚ð“–‚Ä‚é
+;ãƒ‘ãƒƒãƒã‚’å½“ã¦ã‚‹
 ;-----------------------------
 PATCH:
 	LD	HL,PATCH_DATA
@@ -53,7 +53,7 @@ PATCH:
 	JR	.L1
 
 ;-----------------------------
-;ƒTƒEƒ“ƒhƒ{[ƒh‚ð‰Šú‰»‚·‚é
+;ã‚µã‚¦ãƒ³ãƒ‰ãƒœãƒ¼ãƒ‰ã‚’åˆæœŸåŒ–ã™ã‚‹
 ;-----------------------------
 SNDINIT:
 	LD	A,0FFH
@@ -62,11 +62,11 @@ SNDINIT:
 	RET
 
 ;-----------------------------
-;‰¹‚ð”­¶
-;IN	C=ƒrƒbƒgƒpƒ^[ƒ“
+;éŸ³ã‚’ç™ºç”Ÿ
+;IN	C=ãƒ“ãƒƒãƒˆãƒ‘ã‚¿ãƒ¼ãƒ³
 ;-----------------------------
 PLAYSND:
-	IN	A,(08H)		;ƒJƒiƒL[‚ª‰Ÿ‰º‚³‚ê‚Ä‚¢‚é‚©H
+	IN	A,(08H)		;ã‚«ãƒŠã‚­ãƒ¼ãŒæŠ¼ä¸‹ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
 	AND	00100000B	;
 	RET	Z		;
 
@@ -79,8 +79,8 @@ PLAYSND:
 	RET
 
 ;-----------------------------
-;‰¹‚ð’âŽ~
-;IN	C=ƒrƒbƒgƒpƒ^[ƒ“
+;éŸ³ã‚’åœæ­¢
+;IN	C=ãƒ“ãƒƒãƒˆãƒ‘ã‚¿ãƒ¼ãƒ³
 ;-----------------------------
 STOPSND:
 	LD	A,(SND)
@@ -90,7 +90,7 @@ STOPSND:
 	RET
 
 ;-----------------------------
-;ƒr[ƒ€”­ŽË‰¹
+;ãƒ“ãƒ¼ãƒ ç™ºå°„éŸ³
 ;-----------------------------
 BEAM:
 	LD	C,BEAMB
@@ -98,7 +98,7 @@ BEAM:
 	JP	Z0060
 
 ;-----------------------------
-;UFO”òs‰¹
+;UFOé£›è¡ŒéŸ³
 ;-----------------------------
 UFO:
 	LD	(UFOODD),A
@@ -106,14 +106,14 @@ UFO:
 	JP	PLAYSND
 
 ;-----------------------------
-;UFO”òs‰¹•ƒqƒbƒg‰¹’âŽ~
+;UFOé£›è¡ŒéŸ³ï¼†ãƒ’ãƒƒãƒˆéŸ³åœæ­¢
 ;-----------------------------
 UFO_STOP:
 	LD	C,UFOB+UFOHITB
 	JP	STOPSND
 
 ;-----------------------------
-;UFOƒqƒbƒg‰¹
+;UFOãƒ’ãƒƒãƒˆéŸ³
 ;-----------------------------
 UFOHIT:
 	CALL	UFO_STOP
@@ -121,14 +121,14 @@ UFOHIT:
 	JP	PLAYSND
 
 ;-----------------------------
-;ƒ^[ƒQƒbƒgƒqƒbƒg‰¹
+;ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ’ãƒƒãƒˆéŸ³
 ;-----------------------------
 HIT:
 	LD	C,THITB
 	JP	PLAYSND
 
 ;-----------------------------
-;ƒr[ƒ€ƒJ[”š”­‰¹
+;ãƒ“ãƒ¼ãƒ ã‚«ãƒ¼çˆ†ç™ºéŸ³
 ;-----------------------------
 BOMB:
 	LD	C,BOMBB
@@ -138,7 +138,7 @@ BOMB:
 	RET
 
 ;-----------------------------
-;ƒr[ƒ€ƒJ[”š”­‰¹’âŽ~
+;ãƒ“ãƒ¼ãƒ ã‚«ãƒ¼çˆ†ç™ºéŸ³åœæ­¢
 ;-----------------------------
 BOMB_STOP:
 	LD	C,BOMBB
@@ -146,7 +146,7 @@ BOMB_STOP:
 
 
 ;-----------------------------
-;si‰¹—pƒJƒEƒ“ƒ^
+;è¡Œé€²éŸ³ç”¨ã‚«ã‚¦ãƒ³ã‚¿
 ;-----------------------------
 STEP_CNT:
 	LD	HL,STEPC
@@ -159,7 +159,7 @@ STEP_CNT:
 	RET
 
 ;-----------------------------
-;si‰¹
+;è¡Œé€²éŸ³
 ;-----------------------------
 STEP:
 	CALL	UFOPCLR		;
@@ -193,7 +193,7 @@ STEP:
 
 
 ;-----------------------------
-;‰æ–ÊÁ‹Ž
+;ç”»é¢æ¶ˆåŽ»
 ;-----------------------------
 CLS:
 	CALL	SNDINIT
@@ -207,7 +207,7 @@ CLS:
 
 
 ;-----------------------------
-;ƒQ[ƒ€ƒI[ƒo[Žž
+;ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚
 ;-----------------------------
 GAMEOVER:
 	CALL	SNDINIT
@@ -216,7 +216,7 @@ GAMEOVER:
 
 
 ;-----------------------------
-;ƒQ[ƒ€ƒ^ƒCƒgƒ‹•ÏX
+;ã‚²ãƒ¼ãƒ ã‚¿ã‚¤ãƒˆãƒ«å¤‰æ›´
 ;-----------------------------
 TITLE:	DB	0ACH,9AH,40H,4CH,58H,0FAH,70H,8EH,0BEH,40H,52H,58H,0A6H,0ACH	;"SPACE INVADERS"
 	DB	EOD
@@ -230,7 +230,7 @@ TITLE:	DB	0ACH,9AH,40H,4CH,58H,0FAH,70H,8EH,0BEH,40H,52H,58H,0A6H,0ACH	;"SPACE I
 
 PATCH_DATA:
 
-;‰Šú‰»
+;åˆæœŸåŒ–
 	DW	0E101H
 	DB	0FH
 	CALL	SNDINIT
@@ -239,12 +239,12 @@ PATCH_DATA:
 	CALL	INIT03
 	JP	Z0345
 
-;ƒr[ƒ€”­ŽË‰¹
+;ãƒ“ãƒ¼ãƒ ç™ºå°„éŸ³
 	DW	0D2FBH
 	DB	03H
 	CALL	Z,BEAM
 
-;UFO”òs‰¹
+;UFOé£›è¡ŒéŸ³
 	DW	0D95BH
 	DB	03H
 	CALL	UFO
@@ -257,12 +257,12 @@ PATCH_DATA:
 	DB	03H
 	DB	00H,00H,00H
 
-;UFO”òs‰¹’âŽ~
+;UFOé£›è¡ŒéŸ³åœæ­¢
 	DW	0D9D6H
 	DB	03H
 	CALL	UFO_STOP
 
-;UFOƒqƒbƒg‰¹
+;UFOãƒ’ãƒƒãƒˆéŸ³
 	DW	0DA8AH
 	DB	03H
 	JP	UFOHIT
@@ -271,12 +271,12 @@ PATCH_DATA:
 	DB	01H
 	DB	80H
 
-;ƒ^[ƒQƒbƒgƒqƒbƒg‰¹
+;ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ’ãƒƒãƒˆéŸ³
 	DW	0D466H
 	DB	03H
 	CALL	HIT
 
-;BEEP‰¹ˆ—‚ðÁ‹Ž
+;BEEPéŸ³å‡¦ç†ã‚’æ¶ˆåŽ»
 	DW	0DCD2H
 	DB	09H
 	DB	00H,00H,00H
@@ -289,7 +289,7 @@ PATCH_DATA:
 	DB	00H,00H,00H
 	DB	00H,00H,00H
 
-;ƒr[ƒ€ƒJ[”š”­‰¹
+;ãƒ“ãƒ¼ãƒ ã‚«ãƒ¼çˆ†ç™ºéŸ³
 	DW	0D859H
 	DB	03H
 	CALL	BOMB
@@ -303,38 +303,38 @@ PATCH_DATA:
 	DB	01H
 	DB	03H
 
-;ƒr[ƒ€ƒJ[”š”­‰¹’âŽ~
+;ãƒ“ãƒ¼ãƒ ã‚«ãƒ¼çˆ†ç™ºéŸ³åœæ­¢
 	DW	0D88DH
 	DB	03H
 	CALL	BOMB_STOP
 
-;ƒXƒe[ƒWƒNƒŠƒAŽž
+;ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢æ™‚
 	DW	0DF79H
 	DB	06H
 	CALL	SNDINIT
 	JP	0DF50H
 
-;‰æ–ÊÁ‹Ž
+;ç”»é¢æ¶ˆåŽ»
 	DW	0DB09H
 	DB	03H
 	JP	CLS
 
-;ƒQ[ƒ€ƒI[ƒo[Žž
+;ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚
 	DW	0DE80H
 	DB	03H
 	CALL	GAMEOVER
 
-;ƒXƒeƒbƒv‰¹
+;ã‚¹ãƒ†ãƒƒãƒ—éŸ³
 	DW	0D5BCH
 	DB	03H
 	CALL	STEP
 
-;ƒXƒeƒbƒv‰¹—pƒJƒEƒ“ƒ^
+;ã‚¹ãƒ†ãƒƒãƒ—éŸ³ç”¨ã‚«ã‚¦ãƒ³ã‚¿
 	DW	0D900H
 	DB	03H
 	CALL	STEP_CNT
 
-;ƒXƒe[ƒWƒNƒŠƒAŒã‚ÌƒEƒFƒCƒgƒJƒbƒg
+;ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢å¾Œã®ã‚¦ã‚§ã‚¤ãƒˆã‚«ãƒƒãƒˆ
 	DW	0DF26H
 	DB	03H
 	JP	0DEE3H
@@ -349,6 +349,6 @@ PATCH_DATA:
 	DB	00H,00H,00H
 
 
-SND:	DB	00H		;ƒ|[ƒg10H‚Éo—Í‚µ‚½’l
-STEPC:	DB	00H		;ƒXƒeƒbƒv‰¹”­¶—pƒJƒEƒ“ƒ^
-STEPD:	DB	00H		;ƒXƒeƒbƒv‰¹’âŽ~—pƒJƒEƒ“ƒ^
+SND:	DB	00H		;ãƒãƒ¼ãƒˆ10Hã«å‡ºåŠ›ã—ãŸå€¤
+STEPC:	DB	00H		;ã‚¹ãƒ†ãƒƒãƒ—éŸ³ç™ºç”Ÿç”¨ã‚«ã‚¦ãƒ³ã‚¿
+STEPD:	DB	00H		;ã‚¹ãƒ†ãƒƒãƒ—éŸ³åœæ­¢ç”¨ã‚«ã‚¦ãƒ³ã‚¿
