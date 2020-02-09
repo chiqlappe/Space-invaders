@@ -1,6 +1,6 @@
 ;=============================
-;PC-8001 "INVADER"ç”¨
-;ã‚µã‚¦ãƒ³ãƒ‰ãƒ‘ãƒƒãƒ
+;PC-8001 "INVADER"—p
+;ƒTƒEƒ“ƒhƒpƒbƒ`
 ;2020/02/09
 ;
 ;USAGE: MON+GCE00
@@ -8,14 +8,14 @@
 
 FALSE	EQU	00H
 
-BOMBB	EQU	00000001B	;çˆ†ç™ºéŸ³
-BEAMB	EQU	00000010B	;ãƒ“ãƒ¼ãƒ ç™ºå°„éŸ³
-UFOHITB	EQU	00000100B	;UFOãƒ’ãƒƒãƒˆéŸ³
-THITB	EQU	00001000B	;ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ’ãƒƒãƒˆéŸ³
-STEPB	EQU	00010000B	;è¡Œé€²éŸ³
-UFOB	EQU	00100000B	;UFOé£›è¡ŒéŸ³
-PORT	EQU	10H		;ã‚µã‚¦ãƒ³ãƒ‰ãƒœãƒ¼ãƒ‰ã®ãƒãƒ¼ãƒˆç•ªå·
-EOD	EQU	0FFH		;ãƒ‡ãƒ¼ã‚¿ã‚¨ãƒ³ãƒ‰ãƒžãƒ¼ã‚«ãƒ¼
+BOMBB	EQU	00000001B	;”š”­‰¹
+BEAMB	EQU	00000010B	;ƒr[ƒ€”­ŽË‰¹
+UFOHITB	EQU	00000100B	;UFOƒqƒbƒg‰¹
+THITB	EQU	00001000B	;ƒ^[ƒQƒbƒgƒqƒbƒg‰¹
+STEPB	EQU	00010000B	;si‰¹
+UFOB	EQU	00100000B	;UFO”òs‰¹
+PORT	EQU	10H		;ƒTƒEƒ“ƒhƒ{[ƒh‚Ìƒ|[ƒg”Ô†
+EOD	EQU	0FFH		;ƒf[ƒ^ƒGƒ“ƒhƒ}[ƒJ[
 
 GPUT	EQU	0D180H
 Z0060	EQU	0D304H
@@ -43,7 +43,7 @@ INVFORM	EQU	0E450H
 	ORG	0CE00H
 
 ;-----------------------------
-;ãƒ‘ãƒƒãƒã‚’å½“ã¦ã‚‹
+;ƒpƒbƒ`‚ð“–‚Ä‚é
 ;-----------------------------
 PATCH:
 	LD	HL,PATCH_DATA
@@ -61,7 +61,7 @@ PATCH:
 	JR	.L1
 
 ;-----------------------------
-;ã‚µã‚¦ãƒ³ãƒ‰ãƒœãƒ¼ãƒ‰ã‚’åˆæœŸåŒ–ã™ã‚‹
+;ƒTƒEƒ“ƒhƒ{[ƒh‚ð‰Šú‰»‚·‚é
 ;-----------------------------
 SNDINIT:
 	LD	A,0FFH
@@ -70,11 +70,11 @@ SNDINIT:
 	RET
 
 ;-----------------------------
-;éŸ³ã‚’ç™ºç”Ÿ
-;IN	C=ãƒ“ãƒƒãƒˆãƒ‘ã‚¿ãƒ¼ãƒ³
+;‰¹‚ð”­¶
+;IN	C=ƒrƒbƒgƒpƒ^[ƒ“
 ;-----------------------------
 PLAYSND:
-	IN	A,(08H)		;ã‚«ãƒŠã‚­ãƒ¼ãŒæŠ¼ä¸‹ã•ã‚Œã¦ã„ã‚‹ã‹ï¼Ÿ
+	IN	A,(08H)		;ƒJƒiƒL[‚ª‰Ÿ‰º‚³‚ê‚Ä‚¢‚é‚©H
 	AND	00100000B	;
 	RET	Z		;
 
@@ -87,8 +87,8 @@ PLAYSND:
 	RET
 
 ;-----------------------------
-;éŸ³ã‚’åœæ­¢
-;IN	C=ãƒ“ãƒƒãƒˆãƒ‘ã‚¿ãƒ¼ãƒ³
+;‰¹‚ð’âŽ~
+;IN	C=ƒrƒbƒgƒpƒ^[ƒ“
 ;-----------------------------
 STOPSND:
 	LD	A,(SND)
@@ -98,7 +98,7 @@ STOPSND:
 	RET
 
 ;-----------------------------
-;ãƒ“ãƒ¼ãƒ ç™ºå°„éŸ³
+;ƒr[ƒ€”­ŽË‰¹
 ;-----------------------------
 BEAM:
 	LD	C,BEAMB
@@ -106,7 +106,7 @@ BEAM:
 	JP	Z0060
 
 ;-----------------------------
-;UFOé£›è¡ŒéŸ³
+;UFO”òs‰¹
 ;-----------------------------
 UFO:
 	LD	(UFOODD),A
@@ -114,14 +114,14 @@ UFO:
 	JP	PLAYSND
 
 ;-----------------------------
-;UFOé£›è¡ŒéŸ³ï¼†ãƒ’ãƒƒãƒˆéŸ³åœæ­¢
+;UFO”òs‰¹•ƒqƒbƒg‰¹’âŽ~
 ;-----------------------------
 UFO_STOP:
 	LD	C,UFOB+UFOHITB
 	JP	STOPSND
 
 ;-----------------------------
-;UFOãƒ’ãƒƒãƒˆéŸ³
+;UFOƒqƒbƒg‰¹
 ;-----------------------------
 UFOHIT:
 	CALL	UFO_STOP
@@ -129,14 +129,14 @@ UFOHIT:
 	JP	PLAYSND
 
 ;-----------------------------
-;ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ’ãƒƒãƒˆéŸ³
+;ƒ^[ƒQƒbƒgƒqƒbƒg‰¹
 ;-----------------------------
 HIT:
 	LD	C,THITB
 	JP	PLAYSND
 
 ;-----------------------------
-;ãƒ“ãƒ¼ãƒ ã‚«ãƒ¼çˆ†ç™ºéŸ³
+;ƒr[ƒ€ƒJ[”š”­‰¹
 ;-----------------------------
 BOMB:
 	LD	C,BOMBB
@@ -146,7 +146,7 @@ BOMB:
 	RET
 
 ;-----------------------------
-;ãƒ“ãƒ¼ãƒ ã‚«ãƒ¼çˆ†ç™ºéŸ³åœæ­¢
+;ƒr[ƒ€ƒJ[”š”­‰¹’âŽ~
 ;-----------------------------
 BOMB_STOP:
 	LD	C,BOMBB
@@ -154,7 +154,7 @@ BOMB_STOP:
 
 
 ;-----------------------------
-;è¡Œé€²éŸ³ç”¨ã‚«ã‚¦ãƒ³ã‚¿
+;si‰¹—pƒJƒEƒ“ƒ^
 ;-----------------------------
 STEP_CNT:
 	LD	HL,STEPC
@@ -167,7 +167,7 @@ STEP_CNT:
 	RET
 
 ;-----------------------------
-;è¡Œé€²éŸ³
+;si‰¹
 ;-----------------------------
 STEP:
 	CALL	UFOPCLR		;
@@ -201,7 +201,7 @@ STEP:
 
 
 ;-----------------------------
-;ç”»é¢æ¶ˆåŽ»
+;‰æ–ÊÁ‹Ž
 ;-----------------------------
 CLS:
 	CALL	SNDINIT
@@ -214,7 +214,7 @@ CLS:
 	RET			;
 
 ;-----------------------------
-;ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚
+;ƒQ[ƒ€ƒI[ƒo[Žž
 ;-----------------------------
 GAMEOVER:
 	CALL	SNDINIT
@@ -222,22 +222,21 @@ GAMEOVER:
 	RET
 
 ;-----------------------------
-;ã‚²ãƒ¼ãƒ ã‚¿ã‚¤ãƒˆãƒ«å¤‰æ›´
+;ƒQ[ƒ€ƒ^ƒCƒgƒ‹•ÏX
 ;-----------------------------
 TITLE:	DB	0ACH,9AH,40H,4CH,58H,0FAH,70H,8EH,0BEH,40H,52H,58H,0A6H,0ACH	;"SPACE INVADERS"
 	DB	EOD
 
 ;-----------------------------
-;ãƒ¬ã‚¤ãƒ³ãƒœãƒ¼ãƒœãƒ¼ãƒŠã‚¹åˆ¤å®š
+;ƒŒƒCƒ“ƒ{[ƒ{[ƒiƒX”»’è
 ;-----------------------------
 BONUS:
-	LD	A,(Z0087)	;æœ€å¾Œã«åŠ ç®—ã•ã‚ŒãŸãƒã‚¤ãƒ³ãƒˆãŒ01Hãªã‚‰ãƒœãƒ¼ãƒŠã‚¹ç¢ºå®š
+	LD	A,(Z0087)	;ÅŒã‚É‰ÁŽZ‚³‚ê‚½ƒ|ƒCƒ“ƒg‚ª01H‚È‚çƒ{[ƒiƒXŠm’è
 	CP	01H		;
 	JR	NZ,.EXIT	;
 
 	LD	C,UFOB
 	CALL	PLAYSND
-
 	LD	B,03H
 .L1:	PUSH	BC
 	CALL	RAINBOW
@@ -245,7 +244,7 @@ BONUS:
 	POP	BC
 	DJNZ	.L1
 	CALL	RAINBOW
-	CALL	SNDINIT
+	CALL	SNDINIT		;
 
 	LD	A,08H
 .L2:	LD	B,00H
@@ -253,7 +252,7 @@ BONUS:
 	DEC	A
 	JR	NZ,.L2
 
-	LD	IX,Z0102	;ãƒã‚¤ãƒ³ãƒˆåŠ ç®—
+	LD	IX,Z0102	;ƒ|ƒCƒ“ƒg‰ÁŽZ
 	LD	A,50H		;
 	LD	(IX+1D),A	;
 	CALL	Z0212		;
@@ -261,14 +260,14 @@ BONUS:
 .EXIT:	JP	0DEE3H		;
 
 ;-----------------------------
-;ãƒœãƒ¼ãƒŠã‚¹ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸
+;ƒ{[ƒiƒXƒƒbƒZ[ƒW
 ;-----------------------------
 BONUS_TXT:
 	DB	46H,94H,8EH,0B8H,0ACH,0FAH,028H,094H,094H,0FAH,09AH,094H,070H,08EH,0B2H,0ACH,0FFH	;"BONUS 500 POINTS"
 
 
 ;-----------------------------
-;IN	B=é•·ã• MAX 00H
+;IN	B=’·‚³ MAX 00H
 ;-----------------------------
 WAIT:
 	LD	C,00H
@@ -278,7 +277,7 @@ WAIT:
 	RET
 
 ;-----------------------------
-;ãƒ¬ã‚¤ãƒ³ãƒœãƒ¼è¡¨ç¤º
+;ƒŒƒCƒ“ƒ{[•\Ž¦
 ;-----------------------------
 RAINBOW:
 	LD	HL,BONUS_TXT	;
@@ -287,8 +286,8 @@ RAINBOW:
 
 	LD	H,27H
 	LD	L,16H
-	LD	B,01H
-	LD	C,01H
+;	LD	B,00H
+	LD	C,00H
 
 .L1:	PUSH	BC
 
@@ -303,14 +302,14 @@ RAINBOW:
 
 	POP	BC
 	INC	C
-	INC	B
+;	INC	B
 	LD	A,C
 	CP	0AH
 	JR	NZ,.L1
 	RET
 
 ;-----------------------------
-;ãƒ¬ã‚¤ãƒ³ãƒœãƒ¼æ¶ˆåŽ»
+;ƒŒƒCƒ“ƒ{[Á‹Ž
 ;-----------------------------
 RAINBOW_CLR:
 	LD	H,00H
@@ -336,7 +335,7 @@ RAINBOW_CLR:
 
 
 ;-----------------------------
-;ãƒ¬ã‚¤ãƒ³ãƒœãƒ¼ã‚µãƒ–ï¼‘
+;ƒŒƒCƒ“ƒ{[ƒTƒu‚P
 ;IN	H=X,L=Y,C=N
 ;-----------------------------
 RBSUB1:	PUSH	HL
@@ -349,16 +348,21 @@ RBSUB1:	PUSH	HL
 	RET
 
 ;-----------------------------
-;ãƒ¬ã‚¤ãƒ³ãƒœãƒ¼ã‚µãƒ–ï¼’
+;ƒŒƒCƒ“ƒ{[ƒTƒu‚Q
 ;IN	H=X,L=Y,C=N
 ;-----------------------------
 RBSUB2:
 	PUSH	BC
 	PUSH	HL
 
-	DEC	C
+;	DEC	C
+;	JR	Z,.EXIT
+
+	LD	A,C
+	AND	A
 	JR	Z,.EXIT
 
+	LD	B,C
 .L1:	LD	A,H
 	SUB	C
 	JR	C,.EXIT
@@ -372,16 +376,21 @@ RBSUB2:
 	RET
 
 ;-----------------------------
-;ãƒ¬ã‚¤ãƒ³ãƒœãƒ¼ã‚µãƒ–ï¼“
+;ƒŒƒCƒ“ƒ{[ƒTƒu‚R
 ;IN	H=X,L=Y,C=N
 ;-----------------------------
 RBSUB3:
 	PUSH	BC
 	PUSH	HL
 
-	DEC	C
+;	DEC	C
+;	JR	Z,.EXIT
+
+	LD	A,C
+	AND	A
 	JR	Z,.EXIT
 
+	LD	B,C
 .L1:	LD	A,H
 	ADD	A,C
 	CP	4EH		;=78
@@ -396,8 +405,8 @@ RBSUB3:
 	RET
 
 ;-----------------------------
-;æ–‡å­—åˆ—ã‚’ã‚»ãƒŸã‚°ãƒ©ã§å‡ºåŠ›ã™ã‚‹
-;IN	DE=VRAM,HL=ãƒ‡ãƒ¼ã‚¿æ ¼ç´ã‚¢ãƒ‰ãƒ¬ã‚¹
+;•¶Žš—ñ‚ðƒZƒ~ƒOƒ‰‚Åo—Í‚·‚é
+;IN	DE=VRAM,HL=ƒf[ƒ^Ši”[ƒAƒhƒŒƒX
 ;-----------------------------
 GPRT:	LD	(GP1),HL	;
 	LD	(GP2),DE	;
@@ -425,12 +434,12 @@ GPRT:	LD	(GP1),HL	;
 	JR	.L1		;
 
 ;=============================
-;ãƒ‘ãƒƒãƒãƒ‡ãƒ¼ã‚¿
+;ƒpƒbƒ`ƒf[ƒ^
 ;=============================
 
 PATCH_DATA:
 
-;åˆæœŸåŒ–
+;‰Šú‰»
 	DW	0E101H
 	DB	0FH
 	CALL	SNDINIT
@@ -439,12 +448,12 @@ PATCH_DATA:
 	CALL	INIT03
 	JP	Z0345
 
-;ãƒ“ãƒ¼ãƒ ç™ºå°„éŸ³
+;ƒr[ƒ€”­ŽË‰¹
 	DW	0D2FBH
 	DB	03H
 	CALL	Z,BEAM
 
-;UFOé£›è¡ŒéŸ³
+;UFO”òs‰¹
 	DW	0D95BH
 	DB	03H
 	CALL	UFO
@@ -457,12 +466,12 @@ PATCH_DATA:
 	DB	03H
 	DB	00H,00H,00H
 
-;UFOé£›è¡ŒéŸ³åœæ­¢
+;UFO”òs‰¹’âŽ~
 	DW	0D9D6H
 	DB	03H
 	CALL	UFO_STOP
 
-;UFOãƒ’ãƒƒãƒˆéŸ³
+;UFOƒqƒbƒg‰¹
 	DW	0DA8AH
 	DB	03H
 	JP	UFOHIT
@@ -471,12 +480,12 @@ PATCH_DATA:
 	DB	01H
 	DB	80H
 
-;ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ’ãƒƒãƒˆéŸ³
+;ƒ^[ƒQƒbƒgƒqƒbƒg‰¹
 	DW	0D466H
 	DB	03H
 	CALL	HIT
 
-;BEEPéŸ³å‡¦ç†ã‚’æ¶ˆåŽ»
+;BEEP‰¹ˆ—‚ðÁ‹Ž
 	DW	0DCD2H
 	DB	09H
 	DB	00H,00H,00H
@@ -489,7 +498,7 @@ PATCH_DATA:
 	DB	00H,00H,00H
 	DB	00H,00H,00H
 
-;ãƒ“ãƒ¼ãƒ ã‚«ãƒ¼çˆ†ç™ºéŸ³
+;ƒr[ƒ€ƒJ[”š”­‰¹
 	DW	0D859H
 	DB	03H
 	CALL	BOMB
@@ -503,33 +512,33 @@ PATCH_DATA:
 	DB	01H
 	DB	03H
 
-;ãƒ“ãƒ¼ãƒ ã‚«ãƒ¼çˆ†ç™ºéŸ³åœæ­¢
+;ƒr[ƒ€ƒJ[”š”­‰¹’âŽ~
 	DW	0D88DH
 	DB	03H
 	CALL	BOMB_STOP
 
-;ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢æ™‚
+;ƒXƒe[ƒWƒNƒŠƒAŽž
 	DW	0DF79H
 	DB	06H
 	CALL	SNDINIT
 	JP	0DF50H
 
-;ç”»é¢æ¶ˆåŽ»
+;‰æ–ÊÁ‹Ž
 	DW	0DB09H
 	DB	03H
 	JP	CLS
 
-;ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼æ™‚
+;ƒQ[ƒ€ƒI[ƒo[Žž
 	DW	0DE80H
 	DB	03H
 	CALL	GAMEOVER
 
-;ã‚¹ãƒ†ãƒƒãƒ—éŸ³
+;ƒXƒeƒbƒv‰¹
 	DW	0D5BCH
 	DB	03H
 	CALL	STEP
 
-;ã‚¹ãƒ†ãƒƒãƒ—éŸ³ç”¨ã‚«ã‚¦ãƒ³ã‚¿
+;ƒXƒeƒbƒv‰¹—pƒJƒEƒ“ƒ^
 	DW	0D900H
 	DB	03H
 	CALL	STEP_CNT
@@ -540,12 +549,12 @@ PATCH_DATA:
 	LD	DE,0F4F4H
 	LD	HL,TITLE
 
-;ãƒ¬ã‚¤ãƒ³ãƒœãƒ¼ãƒœãƒ¼ãƒŠã‚¹å‡¦ç†ï¼†ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒªã‚¢å¾Œã®ã‚¦ã‚§ã‚¤ãƒˆã‚«ãƒƒãƒˆ
+;ƒŒƒCƒ“ƒ{[ƒ{[ƒiƒXˆ—•ƒXƒe[ƒWƒNƒŠƒAŒã‚ÌƒEƒFƒCƒgƒJƒbƒg
 	DW	0DF26H
 	DB	03H
 	JP	BONUS
 
-;ãƒ•ã‚©ãƒ³ãƒˆ "5"
+;ƒtƒHƒ“ƒg "5"
 	DW	0E228H
 	DB	06H
 	DB	0AEH,0AAH,02H,84H,88H,07H
@@ -554,12 +563,12 @@ PATCH_DATA:
 	DB	00H,00H,00H
 
 ;=============================
-;ãƒ¯ãƒ¼ã‚¯ã‚¨ãƒªã‚¢
+;ƒ[ƒNƒGƒŠƒA
 ;=============================
 
-SND:	DB	00H		;ãƒãƒ¼ãƒˆ10Hã«å‡ºåŠ›ã—ãŸå€¤
-STEPC:	DB	00H		;ã‚¹ãƒ†ãƒƒãƒ—éŸ³ç™ºç”Ÿç”¨ã‚«ã‚¦ãƒ³ã‚¿
-STEPD:	DB	00H		;ã‚¹ãƒ†ãƒƒãƒ—éŸ³åœæ­¢ç”¨ã‚«ã‚¦ãƒ³ã‚¿
-GP1:	DB	00H,00H		;GPRTç”¨
-GP2:	DB	00H,00H		;GPRTç”¨
+SND:	DB	00H		;ƒ|[ƒg10H‚Éo—Í‚µ‚½’l
+STEPC:	DB	00H		;ƒXƒeƒbƒv‰¹”­¶—pƒJƒEƒ“ƒ^
+STEPD:	DB	00H		;ƒXƒeƒbƒv‰¹’âŽ~—pƒJƒEƒ“ƒ^
+GP1:	DB	00H,00H		;GPRT—p
+GP2:	DB	00H,00H		;GPRT—p
 
