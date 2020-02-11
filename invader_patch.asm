@@ -1,26 +1,27 @@
 ;=============================
-;PC-8001 "INVADER"�p
-;�T�E���h�p�b�`
-;2020/02/09
+;PC-8001 "INVADER"用
+;サウンド＆ボーナス追加パッチ
+;2020/02/11
 ;
-;USAGE: MON+GCE00
+;USAGE: MON+GC000
 ;=============================
 
 FALSE	EQU	00H
 
-BOMBB	EQU	00000001B	;������
-BEAMB	EQU	00000010B	;�r�[�����ˉ�
-UFOHITB	EQU	00000100B	;UFO�q�b�g��
-THITB	EQU	00001000B	;�^�[�Q�b�g�q�b�g��
-STEPB	EQU	00010000B	;�s�i��
-UFOB	EQU	00100000B	;UFO��s��
-PORT	EQU	10H		;�T�E���h�{�[�h�̃|�[�g�ԍ�
-EOD	EQU	0FFH		;�f�[�^�G���h�}�[�J�[
+BOMBB	EQU	00000001B	;爆発音
+BEAMB	EQU	00000010B	;ビーム発射音
+UFOHITB	EQU	00000100B	;UFOヒット音
+THITB	EQU	00001000B	;ターゲットヒット音
+STEPB	EQU	00010000B	;行進音
+UFOB	EQU	00100000B	;UFO飛行音
+PORT	EQU	10H		;サウンドボードのポート番号
+EOD	EQU	0FFH		;データエンドマーカー
 
 GPUT	EQU	0D180H
 Z0060	EQU	0D304H
 Z0093	EQU	0D4DBH
 Z0212	EQU	0D4E6H
+Z0126	EQU	0D5D3H
 UFOPCLR	EQU	0D5F4H
 Z0226	EQU	0DB09H
 Z0345	EQU	0DF48H
@@ -36,14 +37,15 @@ Z0102	EQU	0E421H
 Z0087	EQU	0E422H
 UFOODD	EQU	0E42BH
 CLOCK	EQU	0E44BH
+PHASE	EQU	0E449H
 INVFORM	EQU	0E450H
 
 ;=============================
 
-	ORG	0CE00H
+	ORG	0C000H
 
 ;-----------------------------
-;�p�b�`�𓖂Ă�
+;パッチを当てる
 ;-----------------------------
 PATCH:
 	LD	HL,PATCH_DATA
@@ -56,12 +58,12 @@ PATCH:
 	LD	B,00H
 	LD	A,C
 	AND	A
-	JP	Z,5C66H
+	JP	Z,0E100H
 	LDIR
 	JR	.L1
 
 ;-----------------------------
-;�T�E���h�{�[�h������������
+;サウンドボードを初期化する
 ;-----------------------------
 SNDINIT:
 	LD	A,0FFH
@@ -70,11 +72,11 @@ SNDINIT:
 	RET
 
 ;-----------------------------
-;���𔭐�
-;IN	C=�r�b�g�p�^�[��
+;音を発生
+;IN	C=ビットパターン
 ;-----------------------------
 PLAYSND:
-	IN	A,(08H)		;�J�i�L�[����������Ă��邩�H
+	IN	A,(08H)		;カナキーが押下されているか？
 	AND	00100000B	;
 	RET	Z		;
 
@@ -87,8 +89,8 @@ PLAYSND:
 	RET
 
 ;-----------------------------
-;�����~
-;IN	C=�r�b�g�p�^�[��
+;音を停止
+;IN	C=ビットパターン
 ;-----------------------------
 STOPSND:
 	LD	A,(SND)
@@ -98,7 +100,7 @@ STOPSND:
 	RET
 
 ;-----------------------------
-;�r�[�����ˉ�
+;ビーム発射音
 ;-----------------------------
 BEAM:
 	LD	C,BEAMB
@@ -106,7 +108,7 @@ BEAM:
 	JP	Z0060
 
 ;-----------------------------
-;UFO��s��
+;UFO飛行音
 ;-----------------------------
 UFO:
 	LD	(UFOODD),A
@@ -114,14 +116,14 @@ UFO:
 	JP	PLAYSND
 
 ;-----------------------------
-;UFO��s�����q�b�g����~
+;UFO飛行音＆ヒット音停止
 ;-----------------------------
 UFO_STOP:
 	LD	C,UFOB+UFOHITB
 	JP	STOPSND
 
 ;-----------------------------
-;UFO�q�b�g��
+;UFOヒット音
 ;-----------------------------
 UFOHIT:
 	CALL	UFO_STOP
@@ -129,14 +131,14 @@ UFOHIT:
 	JP	PLAYSND
 
 ;-----------------------------
-;�^�[�Q�b�g�q�b�g��
+;ターゲットヒット音
 ;-----------------------------
 HIT:
 	LD	C,THITB
 	JP	PLAYSND
 
 ;-----------------------------
-;�r�[���J�[������
+;ビームカー爆発音
 ;-----------------------------
 BOMB:
 	LD	C,BOMBB
@@ -146,7 +148,7 @@ BOMB:
 	RET
 
 ;-----------------------------
-;�r�[���J�[��������~
+;ビームカー爆発音停止
 ;-----------------------------
 BOMB_STOP:
 	LD	C,BOMBB
@@ -154,7 +156,7 @@ BOMB_STOP:
 
 
 ;-----------------------------
-;�s�i���p�J�E���^
+;行進音用カウンタ
 ;-----------------------------
 STEP_CNT:
 	LD	HL,STEPC
@@ -167,7 +169,7 @@ STEP_CNT:
 	RET
 
 ;-----------------------------
-;�s�i��
+;行進音
 ;-----------------------------
 STEP:
 	CALL	UFOPCLR		;
@@ -201,7 +203,7 @@ STEP:
 
 
 ;-----------------------------
-;��ʏ���
+;画面消去
 ;-----------------------------
 CLS:
 	CALL	SNDINIT
@@ -214,7 +216,7 @@ CLS:
 	RET			;
 
 ;-----------------------------
-;�Q�[���I�[�o�[��
+;ゲームオーバー時
 ;-----------------------------
 GAMEOVER:
 	CALL	SNDINIT
@@ -222,16 +224,16 @@ GAMEOVER:
 	RET
 
 ;-----------------------------
-;�Q�[���^�C�g���ύX
+;ゲームタイトル変更
 ;-----------------------------
 TITLE:	DB	0ACH,9AH,40H,4CH,58H,0FAH,70H,8EH,0BEH,40H,52H,58H,0A6H,0ACH	;"SPACE INVADERS"
 	DB	EOD
 
 ;-----------------------------
-;���C���{�[�{�[�i�X����
+;レインボーボーナス判定
 ;-----------------------------
 BONUS:
-	LD	A,(Z0087)	;�Ō�ɉ��Z���ꂽ�|�C���g��01H�Ȃ�{�[�i�X�m��
+	LD	A,(Z0087)	;最後に加算されたポイントが01Hならボーナス確定
 	CP	01H		;
 	JR	NZ,.EXIT	;
 
@@ -252,7 +254,7 @@ BONUS:
 	DEC	A
 	JR	NZ,.L2
 
-	LD	IX,Z0102	;�|�C���g���Z
+	LD	IX,Z0102	;ポイント加算
 	LD	A,50H		;
 	LD	(IX+1D),A	;
 	CALL	Z0212		;
@@ -260,14 +262,14 @@ BONUS:
 .EXIT:	JP	0DEE3H		;
 
 ;-----------------------------
-;�{�[�i�X���b�Z�[�W
+;ボーナスメッセージ
 ;-----------------------------
 BONUS_TXT:
-	DB	46H,94H,8EH,0B8H,0ACH,0FAH,028H,094H,094H,0FAH,09AH,094H,070H,08EH,0B2H,0ACH,0FFH	;"BONUS 500 POINTS"
+	DB	46H,94H,8EH,0B8H,0ACH,0FAH,0FAH,028H,094H,094H,0FAH,09AH,094H,070H,08EH,0B2H,0ACH,0FFH	;"BONUS  500 POINTS"
 
 
 ;-----------------------------
-;IN	B=���� MAX 00H
+;IN	B=長さ MAX 00H
 ;-----------------------------
 WAIT:
 	LD	C,00H
@@ -277,11 +279,11 @@ WAIT:
 	RET
 
 ;-----------------------------
-;���C���{�[�\��
+;レインボー表示
 ;-----------------------------
 RAINBOW:
 	LD	HL,BONUS_TXT	;
-	LD	DE,0FDDAH	;
+	LD	DE,0FDD7H	;
 	CALL	GPRT		;
 
 	LD	H,27H
@@ -309,7 +311,7 @@ RAINBOW:
 	RET
 
 ;-----------------------------
-;���C���{�[����
+;レインボー消去
 ;-----------------------------
 RAINBOW_CLR:
 	LD	H,00H
@@ -335,7 +337,7 @@ RAINBOW_CLR:
 
 
 ;-----------------------------
-;���C���{�[�T�u�P
+;レインボーサブ１
 ;IN	H=X,L=Y,C=N
 ;-----------------------------
 RBSUB1:	PUSH	HL
@@ -348,15 +350,12 @@ RBSUB1:	PUSH	HL
 	RET
 
 ;-----------------------------
-;���C���{�[�T�u�Q
+;レインボーサブ２
 ;IN	H=X,L=Y,C=N
 ;-----------------------------
 RBSUB2:
 	PUSH	BC
 	PUSH	HL
-
-;	DEC	C
-;	JR	Z,.EXIT
 
 	LD	A,C
 	AND	A
@@ -376,15 +375,12 @@ RBSUB2:
 	RET
 
 ;-----------------------------
-;���C���{�[�T�u�R
+;レインボーサブ３
 ;IN	H=X,L=Y,C=N
 ;-----------------------------
 RBSUB3:
 	PUSH	BC
 	PUSH	HL
-
-;	DEC	C
-;	JR	Z,.EXIT
 
 	LD	A,C
 	AND	A
@@ -405,8 +401,8 @@ RBSUB3:
 	RET
 
 ;-----------------------------
-;��������Z�~�O���ŏo�͂���
-;IN	DE=VRAM,HL=�f�[�^�i�[�A�h���X
+;文字列をセミグラで出力する
+;IN	DE=VRAM,HL=データ格納アドレス
 ;-----------------------------
 GPRT:	LD	(GP1),HL	;
 	LD	(GP2),DE	;
@@ -433,13 +429,140 @@ GPRT:	LD	(GP1),HL	;
 	CALL	GPUT		;
 	JR	.L1		;
 
+
+;-----------------------------
+;面数をトーチカに出力する
+;-----------------------------
+PRTMEN:
+	CALL	Z0126		;
+
+	LD	A,(MEN)
+.L2:	SUB	100
+	JR	NC,.L2
+	ADD	A,100
+	LD	HL,0000H
+.L3:	SUB	10
+	JR	C,.L4
+	INC	H
+	JR	.L3
+.L4:	ADD	A,10
+	LD	(MEN1),A
+	LD	A,H
+	LD	(MEN10),A
+
+	LD	DE,0FB7CH	;
+	LD	B,04H
+.L1:	PUSH	BC
+	LD	A,(MEN10)
+	AND	A
+	JR	Z,.L5
+	CALL	.NUM
+	CALL	.SUB
+
+.L5:	INC	DE
+	INC	DE
+
+	LD	A,(MEN1)
+	CALL	.NUM
+	CALL	.SUB
+
+	LD	HL,010H		;=オフセット値
+	EX	DE,HL		;
+	ADD	HL,DE		;
+	EX	DE,HL		;
+
+	POP	BC
+	DJNZ	.L1
+	RET
+
+.NUM:	LD	HL,NUMFONT
+	RLCA			;A<-A*4
+	RLCA			;
+	LD	C,A
+	LD	B,0
+	ADD	HL,BC
+	RET
+
+.SUB:	PUSH	DE
+	LD	(GDAD),HL	;
+	LD	A,04H		;2*2
+	LD	(GSIZE),A	;
+	CALL	GPUT		;
+	POP	DE
+	RET
+
+
+;-----------------------------
+;面数初期化
+;-----------------------------
+INITMEN:
+	LD	(PHASE),A	;
+	LD	(MEN),A
+	RET
+
+;-----------------------------
+;面数加算
+;-----------------------------
+INCMEN:
+	LD	HL,MEN
+	INC	(HL)
+	LD	HL,PHASE
+	RET
+
+;-----------------------------
+;デモプレイの面数初期化
+;-----------------------------
+DINITMEN:
+	LD	(MEN),A
+	LD	(PHASE),A
+	RET
+
+;-----------------------------
+;面クリア時の音消し
+;-----------------------------
+MENCLEAR:
+	PUSH	AF
+	LD	C,UFOB
+	CALL	STOPSND
+	POP	AF
+	LD	BC,09FFH
+	RET
+
+;-----------------------------
+;数字フォント 2*2 トーチカ用
+;-----------------------------
+NUMFONT:
+	DB	0D3H,0F3H,78H,0F8H	;"0"
+	DB	1BH,0FFH,07H,0F7H	;"1"
+	DB	0DBH,0F3H,53H,0F6H	;"2"
+	DB	5DH,0F9H,66H,0F9H	;"3"
+	DB	0B7H,0F1H,0EEH,0E0H	;"4"
+	DB	051H,0F5H,7BH,0F8H	;"5"
+	DB	0D3H,0FDH,68H,0F8H	;"6"
+	DB	0DDH,0F1H,0FFH,0F0H	;"7"
+	DB	0D3H,0F3H,69H,0F9H	;"8"
+	DB	0D3H,0F3H,66H,0F8H	;"9"
+
+IF FALSE
+	DB	77H,0F7H,70H,0F0H	;"0"
+	DB	7FH,0FFH,06H,0F7H	;"1"
+	DB	77H,0F7H,53H,0F6H	;"2"
+	DB	77H,0F7H,55H,0F0H	;"3"
+	DB	0F7H,0F7H,0DCH,0F0H	;"4"
+	DB	77H,0F7H,54H,0F1H	;"5"
+	DB	7FH,0FFH,50H,0F1H	;"6"
+	DB	77H,0F7H,0FEH,0F0H	;"7"
+	DB	77H,0F7H,52H,0F2H	;"8"
+	DB	77H,0F7H,64H,0F0H	;"9"
+ENDIF
+
 ;=============================
-;�p�b�`�f�[�^
+;パッチデータ
 ;=============================
 
 PATCH_DATA:
 
-;������
+;初期化
 	DW	0E101H
 	DB	0FH
 	CALL	SNDINIT
@@ -448,12 +571,12 @@ PATCH_DATA:
 	CALL	INIT03
 	JP	Z0345
 
-;�r�[�����ˉ�
+;ビーム発射音
 	DW	0D2FBH
 	DB	03H
 	CALL	Z,BEAM
 
-;UFO��s��
+;UFO飛行音
 	DW	0D95BH
 	DB	03H
 	CALL	UFO
@@ -466,12 +589,12 @@ PATCH_DATA:
 	DB	03H
 	DB	00H,00H,00H
 
-;UFO��s����~
+;UFO飛行音停止
 	DW	0D9D6H
 	DB	03H
 	CALL	UFO_STOP
 
-;UFO�q�b�g��
+;UFOヒット音
 	DW	0DA8AH
 	DB	03H
 	JP	UFOHIT
@@ -480,12 +603,12 @@ PATCH_DATA:
 	DB	01H
 	DB	80H
 
-;�^�[�Q�b�g�q�b�g��
+;ターゲットヒット音
 	DW	0D466H
 	DB	03H
 	CALL	HIT
 
-;BEEP������������
+;BEEP音処理を消去
 	DW	0DCD2H
 	DB	09H
 	DB	00H,00H,00H
@@ -498,7 +621,7 @@ PATCH_DATA:
 	DB	00H,00H,00H
 	DB	00H,00H,00H
 
-;�r�[���J�[������
+;ビームカー爆発音
 	DW	0D859H
 	DB	03H
 	CALL	BOMB
@@ -512,33 +635,33 @@ PATCH_DATA:
 	DB	01H
 	DB	03H
 
-;�r�[���J�[��������~
+;ビームカー爆発音停止
 	DW	0D88DH
 	DB	03H
 	CALL	BOMB_STOP
 
-;�X�e�[�W�N���A��
+;ステージクリア時
 	DW	0DF79H
 	DB	06H
 	CALL	SNDINIT
 	JP	0DF50H
 
-;��ʏ���
+;画面消去
 	DW	0DB09H
 	DB	03H
 	JP	CLS
 
-;�Q�[���I�[�o�[��
+;ゲームオーバー時
 	DW	0DE80H
 	DB	03H
 	CALL	GAMEOVER
 
-;�X�e�b�v��
+;ステップ音
 	DW	0D5BCH
 	DB	03H
 	CALL	STEP
 
-;�X�e�b�v���p�J�E���^
+;ステップ音用カウンタ
 	DW	0D900H
 	DB	03H
 	CALL	STEP_CNT
@@ -549,26 +672,56 @@ PATCH_DATA:
 	LD	DE,0F4F4H
 	LD	HL,TITLE
 
-;���C���{�[�{�[�i�X�������X�e�[�W�N���A��̃E�F�C�g�J�b�g
+;レインボーボーナス処理＆ステージクリア後のウェイトカット
 	DW	0DF26H
 	DB	03H
 	JP	BONUS
 
-;�t�H���g "5"
+;フォント "5"
 	DW	0E228H
 	DB	06H
 	DB	0AEH,0AAH,02H,84H,88H,07H
+
+;トーチカの面数表示
+	DW	0D5CFH
+	DB	03H
+	CALL	PRTMEN
+
+
+;面数初期化
+	DW	0DDF9H
+	DB	03H
+	CALL	INITMEN
+
+;面数加算
+	DW	0DDA0H
+	DB	03H
+	CALL	INCMEN
+
+;デモプレイの面数初期化
+	DW	0DFA2H
+	DB	03H
+	CALL	DINITMEN
+
+;クリア時の音消し
+	DW	0DF02H
+	DB	03H
+	CALL	MENCLEAR
 
 ;END OF DATA
 	DB	00H,00H,00H
 
 ;=============================
-;���[�N�G���A
+;ワークエリア
 ;=============================
 
-SND:	DB	00H		;�|�[�g10H�ɏo�͂����l
-STEPC:	DB	00H		;�X�e�b�v�������p�J�E���^
-STEPD:	DB	00H		;�X�e�b�v����~�p�J�E���^
-GP1:	DB	00H,00H		;GPRT�p
-GP2:	DB	00H,00H		;GPRT�p
+SND:	DB	00H		;ポート10Hに出力した値
+STEPC:	DB	00H		;ステップ音発生用カウンタ
+STEPD:	DB	00H		;ステップ音停止用カウンタ
+GP1:	DB	00H,00H		;GPRT用
+GP2:	DB	00H,00H		;GPRT用
+
+MEN:	DB	00H		;面数
+MEN1:	DB	00H		;PRTMEN用
+MEN10:	DB	00H		;
 
