@@ -1,10 +1,10 @@
 ;=============================
-;PC-8001 "RALLY-X"—pƒpƒbƒ`
+;PC-8001 "RALLY-X"ç”¨ãƒ‘ãƒƒãƒ
 ;2020/03/20
 ;
-;ƒQ[ƒ€–{‘Ì‚ðƒ[ƒhŒã‚É‚±‚ÌƒvƒƒOƒ‰ƒ€‚ðA800H‚©‚çŽÀs‚µ‚Ä‰º‚³‚¢
-;BGM’Ç‰Áƒpƒbƒ`‚Í‚±‚Ìƒpƒbƒ`‚ð“–‚Ä‚Ä‚©‚çŽÀs‚µ‚Ä‰º‚³‚¢
-;
+;ã‚²ãƒ¼ãƒ æœ¬ä½“ã‚’ãƒ­ãƒ¼ãƒ‰å¾Œã«ã“ã®ãƒ—ãƒ­ã‚°ãƒ©ãƒ ã‚’A800Hã‹ã‚‰å®Ÿè¡Œã—ã¦ä¸‹ã•ã„
+;BGMè¿½åŠ ãƒ‘ãƒƒãƒã¯ã“ã®ãƒ‘ãƒƒãƒã‚’å½“ã¦ã¦ã‹ã‚‰å®Ÿè¡Œã—ã¦ä¸‹ã•ã„
+;BGMè¿½åŠ ãƒ‘ãƒƒãƒç„¡ã—ã§ã‚‚å‹•ä½œã™ã‚‹ã‚ˆã†ã«ä¿®æ­£ã—ã¾ã—ãŸ
 ;=============================
 
 FALSE		EQU	00H
@@ -43,59 +43,59 @@ ROUND		EQU	0BBE7H
 	JR	.L1
 
 ;=============================
-;ƒpƒbƒ`ƒf[ƒ^
+;ãƒ‘ãƒƒãƒãƒ‡ãƒ¼ã‚¿
 ;=============================
 
 PATCH_DATA:
 
-;ƒQ[ƒ€ƒXƒs[ƒh
+;ã‚²ãƒ¼ãƒ ã‚¹ãƒ”ãƒ¼ãƒ‰
 P1:	DW	0D001H
 	DB	P2-$-1
-	DB	02H		;1~3 1=Å‚‘¬
+	DB	02H		;1~3 1=æœ€é«˜é€Ÿ
 
-;ƒ‰ƒbƒL[ƒ`ƒFƒbƒNƒ|ƒCƒ“ƒgÁ‰¹
+;ãƒ©ãƒƒã‚­ãƒ¼ãƒã‚§ãƒƒã‚¯ãƒã‚¤ãƒ³ãƒˆæ¶ˆéŸ³
 P2:	DW	0E7F8H
 	DB	P3-$-1
 	DB	00H,00H
 
-;ƒ}ƒCƒJ[”š”­ˆ—
+;ãƒžã‚¤ã‚«ãƒ¼çˆ†ç™ºå‡¦ç†
 P3:	DW	0E5DFH
 	DB	P4-$-1
-	DB	40H		;’·‚³‚ð’Z‚­‚·‚é
+	DB	40H		;é•·ã•ã‚’çŸ­ãã™ã‚‹
 
-;ƒƒS•ÏX
+;ãƒ­ã‚´å¤‰æ›´
 P4:	DW	0E4FAH
 	DB	P5-$-1
 	DB	80H,88H,08H,00H,88H,08H,80H,88H,08H,00H,88H,88H,00H,88H,08H	;"namco"
 	DB	0F0H,00H,0F0H,0E0H,0AAH,0FAH,0F0H,0F0H,0F0H,70H,88H,88H,70H,88H,78H
 
-;ƒQ[ƒ€–¼•ÏX
+;ã‚²ãƒ¼ãƒ åå¤‰æ›´
 P5:	DW	0E473H
 	DB	P6-$-1
 	CALL	NAME
 
-;”š”­ƒ}[ƒN•\Ž¦ˆ—
+;çˆ†ç™ºãƒžãƒ¼ã‚¯è¡¨ç¤ºå‡¦ç†
 P6:	DW	0E5C8H
 	DB	P7-$-1
 	JP	BOMB
 
-;ƒQ[ƒ€ƒI[ƒo[ˆ—
+;ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼å‡¦ç†
 P7:	DW	0E61FH
 	DB	P8-$-1
 	JP	GAMEOVER
 
-;”š”­ˆ—
+;çˆ†ç™ºå‡¦ç†
 P8:
-	DW	0DFC4H		;BGMƒpƒbƒ`‰ñ”ð
+	DW	0DFC4H		;BGMãƒ‘ãƒƒãƒå›žé¿
 	DB	P9-$-1
 	JP	DEAD_SCRN
 
-;ƒ^ƒCƒgƒ‹‰æ–Ê
+;ã‚¿ã‚¤ãƒˆãƒ«ç”»é¢
 P9:	DW	0C510H
 	DB	P10-$-1
 	CALL	TITLE
 
-;ƒnƒCƒXƒRƒAXV
+;ãƒã‚¤ã‚¹ã‚³ã‚¢æ›´æ–°
 P10:	DW	0C9E4H
 	DB	P11-$-1
 	CALL	SCORE
@@ -103,7 +103,7 @@ P10:	DW	0C9E4H
 	NOP
 	NOP
 
-;ƒ`ƒƒƒŒƒ“ƒWƒ“ƒOƒXƒe[ƒWƒ^ƒCƒgƒ‹
+;ãƒãƒ£ãƒ¬ãƒ³ã‚¸ãƒ³ã‚°ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¿ã‚¤ãƒˆãƒ«
 P11:	DW	0E51AH
 	DB	P12-$-1
 	CALL	CHALLENGE
@@ -126,7 +126,7 @@ P14:
 
 
 ;=============================
-;’Ç‰Áƒ‹[ƒ`ƒ“
+;è¿½åŠ ãƒ«ãƒ¼ãƒãƒ³
 ;=============================
 
 INIT_SCRN:
@@ -135,7 +135,7 @@ INIT_SCRN:
 	LD	E,02H
 	RET
 
-;‰‹‰=—ÎF 98H,’†‹‰=…F B8H,ã‹‰=‰©F D8H ,ƒGƒLƒXƒp[ƒg=ƒsƒ“ƒN 78H
+;åˆç´š=ç·‘è‰² 98H,ä¸­ç´š=æ°´è‰² B8H,ä¸Šç´š=é»„è‰² D8H ,ã‚¨ã‚­ã‚¹ãƒ‘ãƒ¼ãƒˆ=ãƒ”ãƒ³ã‚¯ 78H
 SET_MAPCOL:
 	LD	A,(ROUND)	;
 	SRL	A		;
@@ -153,7 +153,7 @@ SET_MAPCOL:
 
 CHALLENGE:
 	CALL	0E626H
-	LD	A,0D8H		;•¶Žš‚ð‰©F‚É‚·‚é
+	LD	A,0D8H		;æ–‡å­—ã‚’é»„è‰²ã«ã™ã‚‹
 	CALL	PALETTE		;
 	LD	A,58H		;
 	LD	(0F533H),A	;
@@ -161,7 +161,7 @@ CHALLENGE:
 	RET
 ;
 TITLE:
-	XOR	A		;ƒnƒCƒXƒRƒAXVƒtƒ‰ƒO‚ð~‚ë‚·
+	XOR	A		;ãƒã‚¤ã‚¹ã‚³ã‚¢æ›´æ–°ãƒ•ãƒ©ã‚°ã‚’é™ã‚ã™
 	LD	(NEWHSC),A	;
 	CALL	0E423H
 	LD	A,03EH
@@ -169,23 +169,23 @@ TITLE:
 	RET
 
 NAME:
-	LD	A,0D8H		;•¶Žš‚ð‰©F‚É‚·‚é
+	LD	A,0D8H		;æ–‡å­—ã‚’é»„è‰²ã«ã™ã‚‹
 	CALL	PALETTE		;
-	LD	A,58H		;Žw’ès‚ðÔF‚É‚·‚é
+	LD	A,58H		;æŒ‡å®šè¡Œã‚’èµ¤è‰²ã«ã™ã‚‹
 	LD	(0F3CBH),A	;
 	LD	(0F443H),A	;
 	LD	(0FD2BH),A	;
 	LD	(0FDA3H),A	;
-	LD	A,0F8H		;Žw’ès‚ð”’F‚É‚·‚é
+	LD	A,0F8H		;æŒ‡å®šè¡Œã‚’ç™½è‰²ã«ã™ã‚‹
 	LD	(0F4BBH),A	;
 	LD	(0F533H),A	;
-	LD	HL,01101H	;"NEW"‚ð•\Ž¦‚·‚é
+	LD	HL,01101H	;"NEW"ã‚’è¡¨ç¤ºã™ã‚‹
 	CALL	0E66FH		;
 	DB	"NEW",00H	;
 	LD	HL,01C01H
 	RET
 
-;”š”­ƒ}[ƒN•\Ž¦ˆ—
+;çˆ†ç™ºãƒžãƒ¼ã‚¯è¡¨ç¤ºå‡¦ç†
 BOMB:
 	CALL	0D92AH
 	LD	DE,.DATA	
@@ -196,8 +196,8 @@ BOMB:
 	DB	62H,0BFH,10H,0B0H,0CFH,00H
 	DB	74H,13H,7FH,72H,1FH,43H
 
-;s’PˆÊ‚Å‘®«’l‚ðƒZƒbƒg‚·‚é
-;IN	A=‘®«’l,B=s”,HL=æ“ªƒAƒhƒŒƒX
+;è¡Œå˜ä½ã§å±žæ€§å€¤ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
+;IN	A=å±žæ€§å€¤,B=è¡Œæ•°,HL=å…ˆé ­ã‚¢ãƒ‰ãƒ¬ã‚¹
 SETATRB:
 	LD	DE,78H
 .L1:	LD	(HL),A
@@ -205,7 +205,7 @@ SETATRB:
 	DJNZ	.L1
 	RET
 
-;ƒnƒCƒXƒRƒA‰æ–Ê
+;ãƒã‚¤ã‚¹ã‚³ã‚¢ç”»é¢
 HISCRN:
 	LD	A,03EH
 	CALL	0E626H
@@ -254,7 +254,7 @@ HISCRN:
 .L1:	CALL	0DA0AH
 	RET
 
-;ƒQ[ƒ€ƒI[ƒo[ˆ—
+;ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼å‡¦ç†
 GAMEOVER:
 	LD	HL,0800H
 	CALL	0DA0AH
@@ -266,8 +266,8 @@ GAMEOVER:
 	CALL	SET_MAPCOL
 	RET
 
-;ƒpƒŒƒbƒgƒ`ƒFƒ“ƒW
-;IN	A=‘®«ƒR[ƒh
+;ãƒ‘ãƒ¬ãƒƒãƒˆãƒã‚§ãƒ³ã‚¸
+;IN	A=å±žæ€§ã‚³ãƒ¼ãƒ‰
 PALETTE:
 	LD	HL,0F350H+3
 	LD	DE,120
@@ -280,14 +280,14 @@ PALETTE:
 ;
 DEAD_SCRN:
 	JP	NZ,0DFB2H
-	LD	A,58H		;‰æ–Ê‚ðÔ‚­‚·‚é
+	LD	A,58H		;ç”»é¢ã‚’èµ¤ãã™ã‚‹
 	CALL	PALETTE		;
 	JP	0DFC7H		;
 
 ;
 CHECK1:
 	JR	NC,.L1
-	LD	A,(0BB72H)	;ƒŒƒbƒhƒJ[‚ÍƒXƒ^[ƒg‘O‚©H
+	LD	A,(0BB72H)	;ãƒ¬ãƒƒãƒ‰ã‚«ãƒ¼ã¯ã‚¹ã‚¿ãƒ¼ãƒˆå‰ã‹ï¼Ÿ
 	AND	A		;
 	JP	Z,0DF88H
 .L1:	JP	0DE78H
@@ -301,10 +301,10 @@ SCORE:
 	DJNZ	.L1
 
 	LD	A,0FFH		;
-	LD	(NEWHSC),A	;ƒnƒCƒXƒRƒAXVƒtƒ‰ƒO‚ð—§‚Ä‚é
+	LD	(NEWHSC),A	;ãƒã‚¤ã‚¹ã‚³ã‚¢æ›´æ–°ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 	RET
 
 
-;ƒnƒCƒXƒRƒAXVƒtƒ‰ƒO
+;ãƒã‚¤ã‚¹ã‚³ã‚¢æ›´æ–°ãƒ•ãƒ©ã‚°
 NEWHSC:	DB	00H
 
