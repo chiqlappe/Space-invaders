@@ -1,0 +1,25 @@
+PC-8001 RALLY-X用 全パッチローダー
+
+　ファイル名
+　　・rally_x_ipl.wav　実機用
+　　・rally_x_ipl.cmt　エミュレータ用
+
+　内容
+　　・bugfire2009さんが作られた Rally-X BGM改造セット https://bugfire2009.ojaru.jp/bgm.html と、機能追加パッチを一括実行できるローダーです
+  
+  ローダー作成手順（実機）
+　　・rally_x_ipl.wav をカセットテープに録音する
+　　・続けて"RALLY-X"のプログラムを録音する(C500H~E7FFH)
+　　・リセット後にテープを巻き戻し、"MON"+"L"でゲームが自動的に開始します
+
+  ローダー作成手順（エミュレータj80の場合）
+　　・メニューのTape->Recorderを開き、rally_x_ipl.cmtを選択する
+　　・メニューのTape->Playerを開き、"RALLY-X"のCMTファイルを選択する
+　　・"MON"+"L"+"WC500,E7FF"を実行する
+　　・メニューのTape->Playerを開き、rally_x_ipl.cmtを選択する
+　　・"MON"+"L"でゲームが自動的に開始します
+
+　アドレスマップ
+　　8040H ~ 9070H : BGMプレーヤー本体と音楽データ
+　　9080H ~ 91CAH : BGM改造パッチ 
+　　9200H ~ 93EBH : 機能追加パッチ
